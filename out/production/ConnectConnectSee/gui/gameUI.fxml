@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.layout.GridPane?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GameUI">
+    <children>
+        <HBox prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <!--<Canvas fx:id="canvas" height="400.0" width="400.0"/>-->
+                <HBox prefHeight="400.0" prefWidth="400.0" alignment="CENTER">
+                    <GridPane fx:id="pane" prefHeight="400.0" prefWidth="400.0" alignment="CENTER"
+                              gridLinesVisible="true"/>
+                </HBox>
+                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Button mnemonicParsing="false" text="打乱" onAction="#washAction"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

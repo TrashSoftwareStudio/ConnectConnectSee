@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ConnectConnectSee:jar">
+    <output-path>$PROJECT_DIR$/Jar</output-path>
+    <root id="archive" name="ConnectConnectSee.jar">
+      <element id="module-output" name="ConnectConnectSee" />
+    </root>
+  </artifact>
+</component>
