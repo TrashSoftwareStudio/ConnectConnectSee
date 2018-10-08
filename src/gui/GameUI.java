@@ -2,6 +2,7 @@ package gui;
 
 import core.Matrix;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -9,21 +10,28 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
 
-import static core.Utility.arrayArrayListToString;
 import static core.Utility.containsPoint;
 
 public class GameUI implements Initializable {
 
     @FXML
     private GridPane pane;
+
+    @FXML
+    private Label timeLabel;
+
+    @FXML
+    private Label scoreLabel;
 
     private Matrix matrix;
 
@@ -47,16 +55,30 @@ public class GameUI implements Initializable {
 
     private ArrayList<int[]> animationList;
 
+    private Stage primaryStage;
+
+    private int score;
+    private int scoreMultiplier = 1;
+
+    boolean isRunning;
+
+    private Timer timer;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         startGame();
         draw();
     }
 
+    void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
     @FXML
     private void washAction() {
         matrix.wash();
         draw();
+        subtractScore();
     }
 
     private void startGame() {
@@ -128,6 +150,12 @@ public class GameUI implements Initializable {
     }
 
     private void clickAction(Button bt) {
+        if (!isRunning) {
+            isRunning = true;
+            timer = new Timer(this);
+            Thread t = new Thread(timer);
+            t.start();
+        }
         int r = GridPane.getRowIndex(bt) - 1;
         int c = GridPane.getColumnIndex(bt) - 1;
         if (!isConnecting) {
@@ -144,6 +172,7 @@ public class GameUI implements Initializable {
                 bt.setManaged(false);
                 lastButton.setManaged(false);
                 lastButton = null;
+                addScore();
                 if (animationList.size() > 0) {
                     ArrayList<int[]> listWithBlocks = new ArrayList<>();
                     listWithBlocks.add(new int[]{r + 1, c + 1});
@@ -164,12 +193,26 @@ public class GameUI implements Initializable {
         isConnecting = !isConnecting;
     }
 
+    private void addScore() {
+        score += 1;
+        scoreLabel.setText(String.valueOf(score));
+    }
+
+    private void subtractScore() {
+        score -= scoreMultiplier;
+        scoreLabel.setText(String.valueOf(score));
+        scoreMultiplier *= 2;
+    }
+
     private void showWin() {
+        isRunning = false;
         Alert winInfo = new Alert(Alert.AlertType.INFORMATION);
         winInfo.setTitle("666");
         winInfo.setHeaderText("你赢了");
-        winInfo.setContentText("真tm6");
+        winInfo.setContentText(String.format("真tm6\n得分：%d，用时：%d", score, timer.getTimeSec()));
         winInfo.showAndWait();
+
+        close();
     }
 
     private void drawConnection(ArrayList<int[]> listWithBlocks) {
@@ -220,7 +263,6 @@ public class GameUI implements Initializable {
      * @return 3 if _|, 4 if L, 5 if┌, 6 if ┐.
      */
     private int getTurnDirection(int[] point, ArrayList<int[]> list) {
-//        arrayArrayListToString(list);
         int r = point[0];
         int c = point[1];
         int[] left = new int[]{r, c - 1};
@@ -236,8 +278,45 @@ public class GameUI implements Initializable {
         } else if (containsPoint(list, right) && containsPoint(list, down)) {
             return 5;
         } else {
-//            System.out.println(Arrays.toString(point));
             throw new RuntimeException("???");
+        }
+    }
+
+    void updateTime(long mills) {
+        Platform.runLater(() -> timeLabel.setText(String.valueOf(mills / 1000)));
+    }
+
+    private void close() {
+        primaryStage.close();
+    }
+}
+
+
+class Timer implements Runnable {
+
+    private long timeCountMills;
+
+    private GameUI parent;
+
+    Timer(GameUI parent) {
+        this.parent = parent;
+    }
+
+    @SuppressWarnings("all")
+    int getTimeSec() {
+        return (int) Math.ceil(timeCountMills / 1000);
+    }
+
+    @Override
+    public void run() {
+        long lastUpdatedTime = System.currentTimeMillis();
+        while (parent.isRunning) {
+            long diff;
+            if ((diff = System.currentTimeMillis() - lastUpdatedTime) >= 1000) {
+                lastUpdatedTime += diff;
+                timeCountMills += diff;
+                parent.updateTime(timeCountMills);
+            }
         }
     }
 }

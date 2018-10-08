@@ -104,10 +104,6 @@ public class Matrix {
             remaining -= 2;
         }
         return list;
-//            return list;
-//        } else {
-//            return null;
-//        }
     }
 
     /**

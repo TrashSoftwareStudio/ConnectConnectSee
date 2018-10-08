@@ -4,7 +4,7 @@ public class Block {
 
     private String top;
 
-    public Block(String top) {
+    Block(String top) {
         this.top = top;
     }
 
@@ -13,7 +13,7 @@ public class Block {
         return top;
     }
 
-    public boolean isSame(Block other) {
+    boolean isSame(Block other) {
         return top.equals(other.top);
     }
 }
