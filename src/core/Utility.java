@@ -38,4 +38,38 @@ public abstract class Utility {
         }
         return smallestList;
     }
+
+    /**
+     * Convert a long into a 8-byte array in big-endian.
+     *
+     * @param l the long.
+     * @return 8-byte array.
+     */
+    private static byte[] longToBytes(long l) {
+        byte[] result = new byte[8];
+        for (int i = 0; i < 8; i++) result[i] = (byte) ((l >> ((7 - i) << 3)) & 0xff);
+        return result;
+    }
+
+    /**
+     * Converts a {@code long} into a readable hexadecimal {@code String}.
+     *
+     * @param value   the number to be converted
+     * @return the hexadecimal {@code String} of <code>value</code>
+     */
+    private static String longToHex(long value) {
+        char[] hexArray = "0123456789ABCDEF".toCharArray();
+        byte[] array = longToBytes(value);
+        char[] temp = new char[16];
+        for (int i = 0; i < 8; i++) {
+            int num = array[i] & 0xff;
+            temp[i * 2] = hexArray[num >> 4];
+            temp[i * 2 + 1] = hexArray[num & 0x0f];
+        }
+        return new String(temp);
+    }
+
+    static String numberToHex6(long number) {
+        return longToHex(number).substring(10);
+    }
 }

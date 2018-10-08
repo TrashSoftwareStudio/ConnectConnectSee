@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,9 +14,14 @@ import java.util.ResourceBundle;
 
 public class WelcomeUI implements Initializable {
 
+    @FXML
+    private ComboBox<String> blockType;
+
+    private String[] blockTypeNames = new String[]{"字母模式", "色盲模式-蓝", "色盲模式-绿", "色盲模式-红"};
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        setBlockTypeBox();
     }
 
     @FXML
@@ -30,7 +36,14 @@ public class WelcomeUI implements Initializable {
 
         GameUI gameUI = loader.getController();
         gameUI.setPrimaryStage(primaryStage);
+        gameUI.setBlockType(blockType.getSelectionModel().getSelectedIndex());
+        gameUI.initGame();
 
         primaryStage.show();
+    }
+
+    private void setBlockTypeBox() {
+        blockType.getItems().addAll(blockTypeNames);
+        blockType.getSelectionModel().select(0);
     }
 }

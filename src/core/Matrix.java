@@ -1,13 +1,18 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static core.Utility.findSmallestList;
 
 public class Matrix {
 
-    public final static int alphabet = 0;
+    public final static int ALPHABET = 0;
+
+    public final static int COLOR_BLUE = 1;
+
+    public final static int COLOR_GREEN = 2;
+
+    public final static int COLOR_RED = 3;
 
     private Block[][] matrix;
 
@@ -29,14 +34,15 @@ public class Matrix {
     public void initialize(int cardsSet) {
         int size = width * height;
         remaining = size;
-        if (cardsSet == alphabet) {
-            for (int i = 0; i < size; i++) {
-                int y = i / width;
-                int x = i % width;
-                Block b = new Block(generateText(i));
-                matrix[y][x] = b;
-            }
+
+        for (int i = 0; i < size; i++) {
+            int y = i / width;
+            int x = i % width;
+            Block b = new Block(i / occurNumber, cardsSet);
+            b.generate(i, occurNumber);
+            matrix[y][x] = b;
         }
+
         for (int i = 0; i < width + 2; i++) {
             boolMatrix[0][i] = true;
             boolMatrix[height + 1][i] = true;
@@ -47,15 +53,6 @@ public class Matrix {
         }
     }
 
-    private String generateText(int i) {
-        if (i < 26 * occurNumber) {
-            return String.valueOf((char) (i / occurNumber + 65));
-        } else if (i < 52 * occurNumber) {
-            return String.valueOf((char) (i / occurNumber - 26 + 97));
-        } else {
-            return String.valueOf((char) (i / occurNumber - 52 + 48));
-        }
-    }
 
     public void wash() {
         int size = width * height;
@@ -112,11 +109,11 @@ public class Matrix {
     /**
      * This method takes ABSOLUTE positions (the indices in boolMatrix)
      *
-     * @param r1
-     * @param c1
-     * @param r2
-     * @param c2
-     * @return
+     * @param r1 the absolute row of the 1st point
+     * @param c1 the absolute column of the 1st point
+     * @param r2 the absolute row of the 2nd point
+     * @param c2 the absolute column of the 2nd point
+     * @return the list of all points int the path, null if no such a path
      */
     private ArrayList<int[]> tryConnectInternal(int r1, int c1, int r2, int c2) {
         if (!matrix[r1 - 1][c1 - 1].isSame(matrix[r2 - 1][c2 - 1])) {
@@ -201,25 +198,7 @@ public class Matrix {
 
     private ArrayList<int[]> connect2(int r1, int c1, int r2, int c2) {
 
-        int[][] pointsToCheck = new int[(width + 2) * 2 + (height + 2) * 2 + 4][2];
-        int j = 0;
-        for (int y = 0; y < height + 2; y++) {
-            if (y != r1) {
-                pointsToCheck[j++] = new int[]{y, c1};
-            }
-            if (y != r2) {
-                pointsToCheck[j++] = new int[]{y, c2};
-            }
-        }
-        for (int x = 0; x < width + 2; x++) {
-            if (x != c1) {
-                pointsToCheck[j++] = new int[]{r1, x};
-            }
-            if (x != c2) {
-                pointsToCheck[j++] = new int[]{r2, x};
-            }
-        }
-
+        int[][] pointsToCheck = getAllPossiblePoints(r1, c1, r2, c2);
         ArrayList<ArrayList<int[]>> allSolutions = new ArrayList<>();
 
         for (int[] cor : pointsToCheck) {
@@ -232,7 +211,6 @@ public class Matrix {
                     l1.addAll(l2);
                     l1.add(new int[]{y, x, 2});
                     allSolutions.add(l1);
-//                    return l1;
                 }
                 l1 = directConnect(y, x, r2, c2);
                 l2 = connect1(y, x, r1, c1);
@@ -240,12 +218,32 @@ public class Matrix {
                     l1.addAll(l2);
                     l1.add(new int[]{y, x, 2});
                     allSolutions.add(l1);
-//                    return l1;
                 }
             }
         }
-        return findSmallestList(allSolutions);
-//        return null;
+        return findSmallestList(allSolutions);  // This function will return null if the list is empty
+    }
+
+    private int[][] getAllPossiblePoints(int r1, int c1, int r2, int c2) {
+        int[][] pointsToCheck = new int[(width + 2) * 2 + (height + 2) * 2 + 4][2];
+        int j = 0;
+        for (int y = 0; y < height + 2; y++) {
+            if (y != r1) {
+                pointsToCheck[j++] = new int[]{y, c1};
+            }
+            if (y != r2) {
+                pointsToCheck[j++] = new int[]{y, c2};
+            }
+        }
+        for (int x = width + 1; x >= 0; x--) {  // This is bullshit
+            if (x != c1) {
+                pointsToCheck[j++] = new int[]{r1, x};
+            }
+            if (x != c2) {
+                pointsToCheck[j++] = new int[]{r2, x};
+            }
+        }
+        return pointsToCheck;
     }
 
     public boolean isWin() {

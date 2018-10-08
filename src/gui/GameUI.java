@@ -28,10 +28,7 @@ public class GameUI implements Initializable {
     private GridPane pane;
 
     @FXML
-    private Label timeLabel;
-
-    @FXML
-    private Label scoreLabel;
+    private Label timeLabel, scoreLabel, costLabel, messageLabel;
 
     private Matrix matrix;
 
@@ -50,12 +47,13 @@ public class GameUI implements Initializable {
     private double blockWidth = 40.0;
     private double blockHeight = 40.0;
 
-    private Color bgColor = Color.WHITESMOKE;
-    private Color lineColor = Color.RED;
+    private static final Color bgColor = Color.WHITESMOKE;
+    private static final Color lineColor = Color.RED;
 
     private ArrayList<int[]> animationList;
 
     private Stage primaryStage;
+    private int blockType;
 
     private int score;
     private int scoreMultiplier = 1;
@@ -66,6 +64,9 @@ public class GameUI implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    void initGame() {
         startGame();
         draw();
     }
@@ -75,17 +76,26 @@ public class GameUI implements Initializable {
         setOnCloseAction();
     }
 
+    void setBlockType(int blockType) {
+        this.blockType = blockType;
+    }
+
     @FXML
     private void washAction() {
-        matrix.wash();
-        draw();
-        subtractScore();
+        if (score >= scoreMultiplier) {
+            matrix.wash();
+            draw();
+            subtractScore();
+        } else {
+            messageLabel.setText("分数不足！");
+            messageLabel.setTextFill(Color.RED);
+        }
     }
 
     private void startGame() {
         nodes = new Node[height + 2][width + 2];
         matrix = new Matrix(height, width);
-        matrix.initialize(0);
+        matrix.initialize(blockType);
         matrix.wash();
     }
 
@@ -136,7 +146,15 @@ public class GameUI implements Initializable {
             int y = i / width;
             int x = i % width;
             if (!matrix.isEliminated(y, x)) {
-                Button bt = new Button(matrix.getBlock(y, x).toString());
+                Button bt = new Button();
+                if (blockType == Matrix.ALPHABET) {
+                    bt.setText(matrix.getBlock(y, x).toString());
+                } else if (blockType == Matrix.COLOR_BLUE || blockType == Matrix.COLOR_GREEN ||
+                        blockType == Matrix.COLOR_RED) {
+                    bt.setStyle(String.format("-fx-background-color: #%s", matrix.getBlock(y, x).toString()));
+                } else {
+                    throw new RuntimeException("No such style");
+                }
                 bt.setPrefSize(blockWidth, blockHeight);
                 bt.setOnMouseClicked(e -> clickAction(bt));
                 pane.add(bt, x + 1, y + 1);
@@ -166,13 +184,10 @@ public class GameUI implements Initializable {
             selectedRow = r;
             selectedColumn = c;
             lastButton = bt;
-            lastButton.setFont(new Font(15));
-            lastButton.setTextFill(Color.LIMEGREEN);
         } else {
-            lastButton.setFont(new Font(12));
-            lastButton.setTextFill(Color.BLACK);
             animationList = matrix.tryConnect(selectedRow, selectedColumn, r, c);
             if (animationList != null) {
+                messageLabel.setText("");
                 bt.setManaged(false);
                 lastButton.setManaged(false);
                 lastButton = null;
@@ -194,7 +209,28 @@ public class GameUI implements Initializable {
                 }
             }
         }
+        changeButtonStatus();
         isConnecting = !isConnecting;
+    }
+
+    private void changeButtonStatus() {
+        if (!isConnecting) {
+            if (blockType == Matrix.ALPHABET) {
+                lastButton.setFont(new Font(15));
+                lastButton.setTextFill(Color.LIMEGREEN);
+            } else {
+                lastButton.setStyle(String.format("-fx-border-color: red; -fx-border-width: 5px; " +
+                        "-fx-background-color: #%s", matrix.getBlock(selectedRow, selectedColumn).toString()));
+            }
+        } else if (lastButton != null) {
+            if (blockType == Matrix.ALPHABET) {
+                lastButton.setFont(new Font(12));
+                lastButton.setTextFill(Color.BLACK);
+            } else {
+                lastButton.setStyle(String.format("-fx-background-color: #%s",
+                        matrix.getBlock(selectedRow, selectedColumn).toString()));
+            }
+        }
     }
 
     private void addScore() {
@@ -206,6 +242,7 @@ public class GameUI implements Initializable {
         score -= scoreMultiplier;
         scoreLabel.setText(String.valueOf(score));
         scoreMultiplier *= 2;
+        costLabel.setText(String.valueOf(scoreMultiplier));
     }
 
     private void showWin() {
@@ -320,7 +357,7 @@ class Timer implements Runnable {
             currentTime = System.currentTimeMillis();
             if (currentTime - lastUpdatedTime >= 1000) {
                 lastUpdatedTime = currentTime;
-                timeCountMills =  currentTime - startTime;
+                timeCountMills = currentTime - startTime;
                 parent.updateTime(timeCountMills);
             }
         }
