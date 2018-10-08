@@ -1,6 +1,9 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static core.Utility.findSmallestList;
 
 public class Matrix {
 
@@ -196,47 +199,53 @@ public class Matrix {
         return null;
     }
 
-//    private ArrayList<int[]> connectTwo(int r1, int c1, int r2, int c2) {
-//        // Fixed point 1
-//        // Horizontal check
-//        for (int i = 0; i < width + 2; i++) {
-//            if (boolMatrix[r1][i]) {
-//                ArrayList<int[]> l1 = directConnect(r1, c1, r1, i);
-//                ArrayList<int[]> l2 = connect1(r1, i, r2, c2);
-//                if (l1 != null && l2 != null) {
-//                    l1.addAll(l2);
-//                    l1.add(new int[]{r1, i});
-//                    return l1;
-//                }
-//            }
-//        }
-//        return null;
-//    }
-
     private ArrayList<int[]> connect2(int r1, int c1, int r2, int c2) {
 
-        for (int i = 0; i < (width + 2) * (height + 2); i++) {
-            int y = i / (width + 2);
-            int x = i % (width + 2);
+        int[][] pointsToCheck = new int[(width + 2) * 2 + (height + 2) * 2 + 4][2];
+        int j = 0;
+        for (int y = 0; y < height + 2; y++) {
+            if (y != r1) {
+                pointsToCheck[j++] = new int[]{y, c1};
+            }
+            if (y != r2) {
+                pointsToCheck[j++] = new int[]{y, c2};
+            }
+        }
+        for (int x = 0; x < width + 2; x++) {
+            if (x != c1) {
+                pointsToCheck[j++] = new int[]{r1, x};
+            }
+            if (x != c2) {
+                pointsToCheck[j++] = new int[]{r2, x};
+            }
+        }
+
+        ArrayList<ArrayList<int[]>> allSolutions = new ArrayList<>();
+
+        for (int[] cor : pointsToCheck) {
+            int y = cor[0];
+            int x = cor[1];
             if ((y == r1 || y == r2 || x == c1 || x == c2) && boolMatrix[y][x]) {
                 ArrayList<int[]> l1 = directConnect(y, x, r1, c1);
                 ArrayList<int[]> l2 = connect1(y, x, r2, c2);
                 if (l1 != null && l2 != null) {
                     l1.addAll(l2);
                     l1.add(new int[]{y, x, 2});
-                    return l1;
+                    allSolutions.add(l1);
+//                    return l1;
                 }
                 l1 = directConnect(y, x, r2, c2);
                 l2 = connect1(y, x, r1, c1);
                 if (l1 != null && l2 != null) {
                     l1.addAll(l2);
                     l1.add(new int[]{y, x, 2});
-                    return l1;
+                    allSolutions.add(l1);
+//                    return l1;
                 }
-
             }
         }
-        return null;
+        return findSmallestList(allSolutions);
+//        return null;
     }
 
     public boolean isWin() {

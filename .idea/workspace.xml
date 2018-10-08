@@ -7,20 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="182557a2-028e-4cc6-a72c-b54d1fa43842" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/gui/WelcomeUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/welcomeUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ConnectConnectSee/core/Block.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ConnectConnectSee/core/Block.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ConnectConnectSee/core/PathFinder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ConnectConnectSee/gui/GameUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ConnectConnectSee/gui/GameUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ConnectConnectSee/gui/Launcher.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ConnectConnectSee/gui/Launcher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ConnectConnectSee/gui/gameUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ConnectConnectSee/gui/gameUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Matrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/PathFinder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Utility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Utility.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/GameUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/GameUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/Launcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/Launcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/gameUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/gameUI.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -91,12 +80,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="fxml" value="17" />
-          <entry key="java" value="878" />
+          <entry key="java" value="1591" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="878" />
+          <entry key="JAVA" value="1591" />
           <entry key="XML" value="17" />
         </counts>
       </usages-collector>
@@ -107,12 +96,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gui/GameUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-791">
-              <caret line="207" column="26" lean-forward="true" selection-start-line="207" selection-start-column="26" selection-end-line="207" selection-end-column="26" />
+            <state relative-caret-position="1469">
+              <caret line="326" column="5" lean-forward="true" selection-start-line="326" selection-start-column="5" selection-end-line="326" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1352#1353#0" expanded="true" />
-                <element signature="e#1400#1401#0" expanded="true" />
+                <element signature="e#1941#1942#0" expanded="true" />
+                <element signature="e#2011#2012#0" expanded="true" />
                 <element signature="e#9225#9226#0" expanded="true" />
                 <element signature="e#9311#9312#0" expanded="true" />
                 <element signature="e#9043#9044#0" expanded="true" />
@@ -152,8 +141,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Utility.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+            <state relative-caret-position="120">
+              <caret line="26" column="29" lean-forward="true" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -164,8 +153,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/Matrix.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="293">
+              <caret line="249" lean-forward="true" selection-start-line="249" selection-end-line="249" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7809#7810#0" expanded="true" />
+                <element signature="e#7846#7847#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -223,13 +217,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/Main.java" />
-        <option value="$PROJECT_DIR$/src/core/Utility.java" />
         <option value="$PROJECT_DIR$/src/gui/WelcomeUI.java" />
         <option value="$PROJECT_DIR$/src/gui/Launcher.java" />
         <option value="$PROJECT_DIR$/src/core/Block.java" />
         <option value="$PROJECT_DIR$/src/gui/gameUI.fxml" />
-        <option value="$PROJECT_DIR$/src/gui/GameUI.java" />
         <option value="$PROJECT_DIR$/src/gui/welcomeUI.fxml" />
+        <option value="$PROJECT_DIR$/src/gui/GameUI.java" />
+        <option value="$PROJECT_DIR$/src/core/Utility.java" />
         <option value="$PROJECT_DIR$/src/core/Matrix.java" />
       </list>
     </option>
@@ -298,7 +292,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538984722954" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538987169643" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -354,12 +348,12 @@
       <workItem from="1538773970111" duration="13265000" />
       <workItem from="1538949164717" duration="117000" />
       <workItem from="1538949335966" duration="1841000" />
-      <workItem from="1538982146296" duration="2828000" />
+      <workItem from="1538982146296" duration="5333000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32780000" />
+    <option name="totallyTimeSpent" value="35285000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -373,7 +367,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32765958" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -406,15 +400,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1333">
           <caret line="323" column="11" selection-start-line="323" selection-start-column="11" selection-end-line="323" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Utility.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#12265#12266#0" expanded="true" />
+            <element signature="e#12297#12298#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -476,14 +464,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui/GameUI.java">
+    <entry file="file://$PROJECT_DIR$/src/core/Utility.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-791">
-          <caret line="207" column="26" lean-forward="true" selection-start-line="207" selection-start-column="26" selection-end-line="207" selection-end-column="26" />
+        <state relative-caret-position="120">
+          <caret line="26" column="29" lean-forward="true" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1352#1353#0" expanded="true" />
-            <element signature="e#1400#1401#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui/GameUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1469">
+          <caret line="326" column="5" lean-forward="true" selection-start-line="326" selection-start-column="5" selection-end-line="326" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1941#1942#0" expanded="true" />
+            <element signature="e#2011#2012#0" expanded="true" />
             <element signature="e#9225#9226#0" expanded="true" />
             <element signature="e#9311#9312#0" expanded="true" />
             <element signature="e#9043#9044#0" expanded="true" />
@@ -499,8 +497,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Matrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="293">
+          <caret line="249" lean-forward="true" selection-start-line="249" selection-end-line="249" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7809#7810#0" expanded="true" />
+            <element signature="e#7846#7847#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

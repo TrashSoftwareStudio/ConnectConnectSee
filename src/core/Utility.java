@@ -26,4 +26,16 @@ public abstract class Utility {
         }
         System.out.println();
     }
+
+    public static ArrayList<int[]> findSmallestList(ArrayList<ArrayList<int[]>> lists) {
+        if (lists.size() == 0) return null;
+        ArrayList<int[]> smallestList = lists.get(0);
+        for (int i = 1; i < lists.size(); i++) {
+            ArrayList<int[]> currentList = lists.get(i);
+            if (currentList.size() < smallestList.size()) {
+                smallestList = currentList;
+            }
+        }
+        return smallestList;
+    }
 }

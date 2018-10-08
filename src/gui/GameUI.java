@@ -72,6 +72,7 @@ public class GameUI implements Initializable {
 
     void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        setOnCloseAction();
     }
 
     @FXML
@@ -86,7 +87,10 @@ public class GameUI implements Initializable {
         matrix = new Matrix(height, width);
         matrix.initialize(0);
         matrix.wash();
+    }
 
+    private void setOnCloseAction() {
+        primaryStage.setOnCloseRequest(e -> isRunning = false);
     }
 
     private void showHidingBlocks() {
@@ -309,12 +313,14 @@ class Timer implements Runnable {
 
     @Override
     public void run() {
-        long lastUpdatedTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
+        long lastUpdatedTime = startTime;
+        long currentTime;
         while (parent.isRunning) {
-            long diff;
-            if ((diff = System.currentTimeMillis() - lastUpdatedTime) >= 1000) {
-                lastUpdatedTime += diff;
-                timeCountMills += diff;
+            currentTime = System.currentTimeMillis();
+            if (currentTime - lastUpdatedTime >= 1000) {
+                lastUpdatedTime = currentTime;
+                timeCountMills =  currentTime - startTime;
                 parent.updateTime(timeCountMills);
             }
         }
