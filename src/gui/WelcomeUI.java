@@ -42,6 +42,18 @@ public class WelcomeUI implements Initializable {
         primaryStage.show();
     }
 
+    @FXML
+    private void aboutAction() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("aboutUI.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage primaryStage = new Stage();
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("ConnectConnectSee");
+
+        primaryStage.show();
+    }
+
     private void setBlockTypeBox() {
         blockType.getItems().addAll(blockTypeNames);
         blockType.getSelectionModel().select(0);

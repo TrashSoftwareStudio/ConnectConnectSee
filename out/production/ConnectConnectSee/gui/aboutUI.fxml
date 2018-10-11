@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AboutUI">
+   <children>
+      <VBox alignment="CENTER" prefHeight="300.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label text="连连看">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="垃圾软件工作室" />
+            <Label text="Trash Software Studio" />
+            <Label fx:id="versionLabel"/>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
