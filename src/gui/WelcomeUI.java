@@ -54,6 +54,21 @@ public class WelcomeUI implements Initializable {
         primaryStage.show();
     }
 
+    @FXML
+    private void settingsAction() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("settingsUI.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage primaryStage = new Stage();
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("设置");
+
+        SettingsUI sui = loader.getController();
+        sui.setPrimaryStage(primaryStage);
+
+        primaryStage.show();
+    }
+
     private void setBlockTypeBox() {
         blockType.getItems().addAll(blockTypeNames);
         blockType.getSelectionModel().select(0);

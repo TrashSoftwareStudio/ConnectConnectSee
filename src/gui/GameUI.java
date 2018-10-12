@@ -60,7 +60,11 @@ public class GameUI implements Initializable {
 
     boolean isRunning;
 
+    private int collapse;
+
     private Timer timer;
+
+    private Button hintBtn1, hintBtn2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -92,9 +96,40 @@ public class GameUI implements Initializable {
         }
     }
 
+    @FXML
+    private void hintAction() {
+        if (score >= scoreMultiplier) {
+            int[][] hint = matrix.getHint();
+            if (hint != null) {
+                int r1 = hint[0][0] + 1;
+                int c1 = hint[0][1] + 1;
+                int r2 = hint[1][0] + 1;
+                int c2 = hint[1][1] + 1;
+                hintBtn1 = (Button) nodes[r1][c1];
+                hintBtn2 = (Button) nodes[r2][c2];
+                showHint(r1, c1, r2, c2);
+                subtractScore();
+            }
+        }
+    }
+
+    private void showHint(int r1, int c1, int r2, int c2) {
+        if (blockType == Matrix.ALPHABET) {
+            hintBtn1.setStyle("-fx-border-color: orange; -fx-border-width: 3px;");
+            hintBtn2.setStyle("-fx-border-color: orange; -fx-border-width: 3px;");
+        } else if (blockType == Matrix.COLOR_BLUE || blockType == Matrix.COLOR_GREEN || blockType == Matrix.COLOR_RED) {
+            hintBtn1.setStyle(String.format("-fx-border-color: orange; -fx-border-width: 3px; " +
+                    "-fx-background-color: #%s", matrix.getBlock(r1 - 1, c1 - 1).toString()));
+            hintBtn2.setStyle(String.format("-fx-border-color: orange; -fx-border-width: 3px; " +
+                    "-fx-background-color: #%s", matrix.getBlock(r2 - 1, c2 - 1).toString()));
+        }
+
+    }
+
     private void startGame() {
         nodes = new Node[height + 2][width + 2];
         matrix = new Matrix(height, width);
+        collapse = GameSettingsUI.getCollapseIndex();
         matrix.initialize(blockType);
         matrix.wash();
     }
@@ -199,9 +234,25 @@ public class GameUI implements Initializable {
                     listWithBlocks.add(new int[]{selectedRow + 1, selectedColumn + 1});
                     drawConnection(listWithBlocks);
                     PauseTransition pause = new PauseTransition(Duration.millis(150));
-                    pause.setOnFinished(e -> draw());
+                    pause.setOnFinished(e -> {
+                        if (collapse != 0) {
+                            matrix.verticalCollapse(r + 1, c + 1, selectedRow + 1, selectedColumn + 1);
+                            if (collapse == 2) {
+                                matrix.columnCollapse(c + 1, selectedColumn + 1);
+//                                matrix.horizontalCollapse(r + 1, c + 1, selectedRow + 1, selectedColumn + 1);
+                            }
+                        }
+                        draw();
+                    });
                     pause.play();
                 } else {
+                    if (collapse != 0) {
+                        matrix.verticalCollapse(r + 1, c + 1, selectedRow + 1, selectedColumn + 1);
+                        if (collapse == 2) {
+                            matrix.columnCollapse(c + 1, selectedColumn + 1);
+//                            matrix.horizontalCollapse(r + 1, c + 1, selectedRow + 1, selectedColumn + 1);
+                        }
+                    }
                     draw();
                 }
                 if (matrix.isWin()) {

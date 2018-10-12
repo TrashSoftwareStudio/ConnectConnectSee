@@ -116,9 +116,7 @@ public class Matrix {
      * @return the list of all points int the path, null if no such a path
      */
     private ArrayList<int[]> tryConnectInternal(int r1, int c1, int r2, int c2) {
-        if (!matrix[r1 - 1][c1 - 1].isSame(matrix[r2 - 1][c2 - 1])) {
-            return null;
-        }
+        if (!matrix[r1 - 1][c1 - 1].isSame(matrix[r2 - 1][c2 - 1])) return null;
         ArrayList<int[]> list = directConnect(r1, c1, r2, c2);
         if (list != null) return list;
         list = connect1(r1, c1, r2, c2);
@@ -173,17 +171,14 @@ public class Matrix {
     private ArrayList<int[]> connect1(int r1, int c1, int r2, int c2) {
         int r3 = r1;
         int c3 = c2;
-        if (boolMatrix[r3][c3]) {
-            ArrayList<int[]> d1 = directConnect(r1, c1, r3, c3);
-            ArrayList<int[]> d2 = directConnect(r2, c2, r3, c3);
-            if (d1 != null && d2 != null) {
-                d1.addAll(d2);
-                d1.add(new int[]{r3, c3, 2});  // 2 means turning point
-                return d1;
-            }
-        }
+        ArrayList<int[]> check1 = connect1InternalCheck(r1, c1, r2, c2, r3, c3);
+        if (check1 != null) return check1;
         r3 = r2;
         c3 = c1;
+        return connect1InternalCheck(r1, c1, r2, c2, r3, c3);
+    }
+
+    private ArrayList<int[]> connect1InternalCheck(int r1, int c1, int r2, int c2, int r3, int c3) {
         if (boolMatrix[r3][c3]) {
             ArrayList<int[]> d1 = directConnect(r1, c1, r3, c3);
             ArrayList<int[]> d2 = directConnect(r2, c2, r3, c3);
@@ -228,23 +223,142 @@ public class Matrix {
         int[][] pointsToCheck = new int[(width + 2) * 2 + (height + 2) * 2 + 4][2];
         int j = 0;
         for (int y = 0; y < height + 2; y++) {
-            if (y != r1) {
-                pointsToCheck[j++] = new int[]{y, c1};
-            }
-            if (y != r2) {
-                pointsToCheck[j++] = new int[]{y, c2};
-            }
+            j = allPossiblePointsCheckHelper(pointsToCheck, y, r1, r2, y, c1, y, c2, j);
         }
-        for (int x = width + 1; x >= 0; x--) {  // This is bullshit
-            if (x != c1) {
-                pointsToCheck[j++] = new int[]{r1, x};
-            }
-            if (x != c2) {
-                pointsToCheck[j++] = new int[]{r2, x};
-            }
+        for (int x = 0; x < width + 2; x++) {
+            j = allPossiblePointsCheckHelper(pointsToCheck, x, c1, c2, r1, x, r2, x, j);
         }
+//        for (int y = 0; y < height + 2; y++) {
+//            if (y != r1) {
+//                pointsToCheck[j++] = new int[]{y, c1};
+//            }
+//            if (y != r2) {
+//                pointsToCheck[j++] = new int[]{y, c2};
+//            }
+//        }
+//        for (int x = 0; x < width + 2; x++) {  // This is bullshit
+//            if (x != c1) {
+//                pointsToCheck[j++] = new int[]{r1, x};
+//            }
+//            if (x != c2) {
+//                pointsToCheck[j++] = new int[]{r2, x};
+//            }
+//        }
         return pointsToCheck;
     }
+
+    private int allPossiblePointsCheckHelper(int[][] pointsToCheck, int a, int b, int c, int d, int e, int f, int g, int j) {
+        if (a != b) {
+            pointsToCheck[j++] = new int[]{d, e};
+        }
+        if (a != c) {
+            pointsToCheck[j++] = new int[]{f, g};
+        }
+        return j;
+    }
+
+    public void verticalCollapse(int r1, int c1, int r2, int c2) {
+        if (c1 != c2) {
+            verticalCollapseHelper1(r1, c1);
+            verticalCollapseHelper1(r2, c2);
+        } else {
+            verticalCollapseHelper2(r1, r2, c1);
+        }
+    }
+
+    private void verticalCollapseHelper1(int r1, int c) {
+        for (int r = r1; r > 1; r--) {
+            matrix[r - 1][c - 1] = matrix[r - 2][c - 1];
+            boolMatrix[r][c] = boolMatrix[r - 1][c];
+        }
+        matrix[0][c - 1] = null;
+        boolMatrix[1][c] = true;
+    }
+
+    private void verticalCollapseHelper2(int r1, int r2, int c) {
+        int minR = Math.min(r1, r2);
+        int maxR = Math.max(r1, r2);
+        verticalCollapseHelper1(minR, c);
+        verticalCollapseHelper1(maxR, c);
+    }
+
+    public void columnCollapse(int c1, int c2) {
+        int minC = Math.min(c1, c2);
+        int maxC = Math.max(c1, c2);
+        columnCollapseHelper1(maxC);
+        columnCollapseHelper1(minC);
+    }
+
+    private boolean checkEmptyColumn(int realC) {
+        for (int i = 1; i < width + 1; i++) {
+            if (!boolMatrix[i][realC]) return false;
+        }
+        return true;
+    }
+
+    private void columnCollapseHelper1(int realC) {
+        if (checkEmptyColumn(realC)) {
+            for (int c = realC; c < width; c++) {
+                for (int r = 1; r < height + 1; r++) {
+                    boolMatrix[r][c] = boolMatrix[r][c + 1];
+                    matrix[r - 1][c - 1] = matrix[r - 1][c];
+                }
+            }
+            for (int r = 1; r < height + 1; r++) {
+                boolMatrix[r][width] = true;
+                matrix[r - 1][width - 1] = null;
+            }
+        }
+    }
+
+    public int[][] getHint() {
+        for (int a = 0; a < height; a++) {
+            for (int b = 0; b < width; b++) {
+                if (!boolMatrix[a + 1][b + 1]) {
+                    for (int c = 0; c < height; c++) {
+                        for (int d = 0; d < width; d++) {
+                            if (a != c || b != d) {
+                                if (!boolMatrix[c + 1][d + 1]) {
+                                    ArrayList<int[]> list = tryConnectInternal(a + 1, b + 1, c + 1, d + 1);
+                                    if (list != null) {
+                                        return new int[][]{new int[]{a, b}, new int[]{c, d}};
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+//    public void horizontalCollapse(int r1, int c1, int r2, int c2) {
+//        if (r1 != r2) {
+//            horizontalCollapseHelper1(r1, c1);
+//            horizontalCollapseHelper1(r2, c2);
+//        } else {
+//            horizontalCollapseHelper2(r1, c1, c2);
+//        }
+//    }
+//
+//    private void horizontalCollapseHelper1(int r, int c) {
+//        for (int c0 = c; c0 < width; c0++) {
+//            matrix[r - 1][c0 - 1] = matrix[r - 1][c0];
+//            boolMatrix[r][c0] = boolMatrix[r][c0 + 1];
+////            matrix[r - 1][c0 - 1] = matrix[r - 1][c0 - 2];
+////            boolMatrix[r][c0] = boolMatrix[r - 1][c0];
+//        }
+//        matrix[r - 1][width - 1] = null;
+//        boolMatrix[r][width] = true;
+//    }
+//
+//    private void horizontalCollapseHelper2(int r, int c1, int c2) {
+//        int minC = Math.min(c1, c2);
+//        int maxC = Math.max(c2, c2);
+//        horizontalCollapseHelper1(r, maxC);
+//        horizontalCollapseHelper1(r, minC);
+//    }
 
     public boolean isWin() {
         return remaining == 0;

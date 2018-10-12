@@ -30,6 +30,7 @@
                                 <Label fx:id="costLabel" text="1"/>
                             </children>
                         </HBox>
+                        <Button mnemonicParsing="false" text="提示" onAction="#hintAction"/>
                         <Label fx:id="messageLabel"/>
                     </children>
                     <padding>
