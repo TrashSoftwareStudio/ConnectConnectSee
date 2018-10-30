@@ -34,8 +34,8 @@ public class GameUI implements Initializable {
 
     private Node[][] nodes;
 
-    private int height = 8;
-    private int width = 8;
+    private int height = 10;
+    private int width = 10;
 
     private int selectedRow;
     private int selectedColumn;
@@ -55,8 +55,10 @@ public class GameUI implements Initializable {
     private Stage primaryStage;
     private int blockType;
 
+    private int restartTime = 3;
+
     private int score;
-    private int scoreMultiplier = 1;
+    private int scoreMultiplier = 2;
 
     boolean isRunning;
 
@@ -68,6 +70,7 @@ public class GameUI implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        messageLabel.setTextFill(Color.RED);
     }
 
     void initGame() {
@@ -84,15 +87,21 @@ public class GameUI implements Initializable {
         this.blockType = blockType;
     }
 
+    private void autoWash() {
+        matrix.wash();
+        draw();
+        restartTime -= 1;
+    }
+
     @FXML
     private void washAction() {
         if (score >= scoreMultiplier) {
             matrix.wash();
             draw();
             subtractScore();
+            checkLost();
         } else {
             messageLabel.setText("分数不足！");
-            messageLabel.setTextFill(Color.RED);
         }
     }
 
@@ -109,7 +118,11 @@ public class GameUI implements Initializable {
                 hintBtn2 = (Button) nodes[r2][c2];
                 showHint(r1, c1, r2, c2);
                 subtractScore();
+            } else {
+                messageLabel.setText("无牌可消除！");
             }
+        } else {
+            messageLabel.setText("分数不足！");
         }
     }
 
@@ -258,6 +271,7 @@ public class GameUI implements Initializable {
                 if (matrix.isWin()) {
                     showWin();
                 }
+                checkLost();
             }
         }
         changeButtonStatus();
@@ -296,12 +310,35 @@ public class GameUI implements Initializable {
         costLabel.setText(String.valueOf(scoreMultiplier));
     }
 
+    private void checkLost() {
+        if (matrix.getHint() == null) {
+            if (restartTime > 0) {
+                autoWash();
+            } else {
+                if (score < scoreMultiplier) {
+                    showLost();
+                }
+            }
+        }
+    }
+
     private void showWin() {
         isRunning = false;
         Alert winInfo = new Alert(Alert.AlertType.INFORMATION);
         winInfo.setTitle("666");
         winInfo.setHeaderText("你赢了");
         winInfo.setContentText(String.format("真tm6\n得分：%d，用时：%d", score, timer.getTimeSec()));
+        winInfo.showAndWait();
+
+        close();
+    }
+
+    private void showLost() {
+        isRunning = false;
+        Alert winInfo = new Alert(Alert.AlertType.INFORMATION);
+        winInfo.setTitle("777");
+        winInfo.setHeaderText("你个垃圾");
+        winInfo.setContentText(String.format("你没救了\n得分：%d，用时：%d", score, timer.getTimeSec()));
         winInfo.showAndWait();
 
         close();
@@ -339,7 +376,6 @@ public class GameUI implements Initializable {
                 }
             }
         }
-
     }
 
     private int getGraphicType(int[] cor, ArrayList<int[]> listWithBlocks) {

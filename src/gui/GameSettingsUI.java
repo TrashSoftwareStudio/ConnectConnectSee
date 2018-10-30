@@ -35,9 +35,9 @@ public class GameSettingsUI implements Initializable, ItemController {
                 case "down_left":
                     index = 2;
                     break;
-                case "col_left_down":
-                    index = 3;
-                    break;
+//                case "col_left_down":
+//                    index = 3;
+//                    break;
                 default:
                     index = 0;
                     break;
@@ -54,7 +54,7 @@ public class GameSettingsUI implements Initializable, ItemController {
         String s;
         if (index == 1) s = "down";
         else if (index == 2) s = "down_left";
-        else if (index == 3) s = "col_left_down";
+//        else if (index == 3) s = "col_left_down";
         else s = "none";
         ConfigLoader.writeConfig("collapse", s);
     }

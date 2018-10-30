@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
+<AnchorPane prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GameUI">
     <children>
         <HBox prefHeight="400.0" prefWidth="600.0">
@@ -17,7 +17,7 @@
                     <GridPane fx:id="pane" alignment="CENTER" gridLinesVisible="true" prefHeight="400.0"
                               prefWidth="400.0"/>
                 </HBox>
-                <VBox prefHeight="400.0" prefWidth="200.0" spacing="10.0">
+                <VBox prefHeight="400.0" prefWidth="240.0" spacing="10.0">
                     <children>
                         <Label text="时间："/>
                         <Label fx:id="timeLabel" text="0"/>
@@ -27,7 +27,7 @@
                             <children>
                                 <Button mnemonicParsing="false" onAction="#washAction" text="打乱"/>
                                 <Label text="消耗："/>
-                                <Label fx:id="costLabel" text="1"/>
+                                <Label fx:id="costLabel" text="2"/>
                             </children>
                         </HBox>
                         <Button mnemonicParsing="false" text="提示" onAction="#hintAction"/>

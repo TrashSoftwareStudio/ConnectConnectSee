@@ -319,7 +319,8 @@ public class Matrix {
                         for (int d = 0; d < width; d++) {
                             if (a != c || b != d) {
                                 if (!boolMatrix[c + 1][d + 1]) {
-                                    ArrayList<int[]> list = tryConnectInternal(a + 1, b + 1, c + 1, d + 1);
+                                    ArrayList<int[]> list =
+                                            tryConnectInternal(a + 1, b + 1, c + 1, d + 1);
                                     if (list != null) {
                                         return new int[][]{new int[]{a, b}, new int[]{c, d}};
                                     }
